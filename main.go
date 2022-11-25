@@ -96,14 +96,14 @@ func runScanner(scanner bufio.Scanner, lines map[string]Uri, quietMode bool, enc
 		raw = strings.TrimSpace(raw)
 		decodedUrl, err := url.QueryUnescape(raw)
 		if err != nil {
-			panic(err)
+			continue
 		}
 
 		mUrl, err := url.Parse(decodedUrl)
 
 		v, err := url.ParseQuery(mUrl.RawQuery)
 		if err != nil {
-			panic(err)
+			continue
 		}
 
 		if len(v) > 0 {
