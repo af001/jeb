@@ -85,6 +85,8 @@ func main() {
 func runScanner(scanner bufio.Scanner, lines map[string]Uri, quietMode bool, encode bool, new string) {
 
 	var status bool
+	var process bool
+
 	if new == NEW {
 		status = true
 	} else {
@@ -100,27 +102,43 @@ func runScanner(scanner bufio.Scanner, lines map[string]Uri, quietMode bool, enc
 		}
 
 		mUrl, err := url.Parse(decodedUrl)
-
-		v, err := url.ParseQuery(mUrl.RawQuery)
 		if err != nil {
 			continue
 		}
 
-		if len(v) > 0 {
-			var params []string
-			for k := range v {
-				params = append(params, k)
+		s := []string{".js", ".eot", ".woff", ".ttf", ".svg", ".jpg", ".jpeg", ".png", ".gif", ".css", ".woff2", ".ico", ".pdf", ".txt", ":", ",", ";"}
+		for _, a := range s {
+			if strings.HasSuffix(mUrl.Path, a) {
+				process = false
+				break
+			} else {
+				process = true
+			}
+		}
+
+		if process {
+			v, err := url.ParseQuery(mUrl.RawQuery)
+			if err != nil {
+				continue
 			}
 
-			hname := mUrl.Hostname
-			name := fmt.Sprintln(hname() + mUrl.Path)
-			p := Uri{mUrl.RawQuery, mUrl.Scheme, hname(), mUrl.Path, status, params}
+			if len(v) > 0 {
+				var params []string
 
-			test := lines[name]
-			if len(test.params) < len(v) {
-				lines[name] = p
-			} else {
-				continue
+				for k := range v {
+					params = append(params, k)
+				}
+
+				hname := mUrl.Hostname
+				name := fmt.Sprintln(hname() + mUrl.Path)
+				p := Uri{mUrl.RawQuery, mUrl.Scheme, hname(), mUrl.Path, status, params}
+
+				test := lines[name]
+				if len(test.params) < len(v) {
+					lines[name] = p
+				} else {
+					continue
+				}
 			}
 		}
 	}
