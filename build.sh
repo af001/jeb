@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="v0.1.2"
+VERSION="v0.1.1"
 
 # Build multi-arch binaries
 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/linux_amd64/jeb
