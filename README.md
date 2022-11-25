@@ -64,7 +64,7 @@ https://example3.com/someparam?x=efg&y=2&z=223
 go install -v github.com/af001/jeb@latest
 ```
 
-Or download a binary release for your platform.
+Or [download](https://github.com/af001/jeb/releases/) a binary release for your platform.
 
 ## References
 Based on [anew](https://github.com/tomnomnom/anew) by [@tomnomnom](https://github.com/tomnomnom)
